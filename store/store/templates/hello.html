@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+<html>
   <body>
-    <h1>Hello</h1>
+    {% for product in products %}
+    <h3>{{ product.name }}</h3>
+    <p>id: {{ product.id }}</p>
+    <p>price: {{ product.unit_price }}</p>
+    <p>------------</p>
+    {% endfor %}
+
+    {% comment %} {% for customer in customers %}
+    <h3>{{ customer.first_name }} {{ customer.last_name }}</h3>
+    <p>id: {{ customer.id }}</p>
+    <p>------------</p>
+    {% endfor %} {% endcomment %}
   </body>
 </html>
