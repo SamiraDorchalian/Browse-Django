@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "edc09a7a1d784defc6fbd48ae3f9ac6e9da3e3fde6d9df790085267a6e2f1f36"
+            "sha256": "f71f01987cdfea6223b6f91c47f72a71349703979beb00b4e5735e1353ede9b8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -41,6 +41,24 @@
             "index": "pypi",
             "markers": "python_version >= '3.9'",
             "version": "==5.2.0"
+        },
+        "factory-boy": {
+            "hashes": [
+                "sha256:1c39e3289f7e667c4285433f305f8d506efc2fe9c73aaea4151ebd5cdea394fc",
+                "sha256:866862d226128dfac7f2b4160287e899daf54f2612778327dd03d0e2cb1e3d03"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==3.3.3"
+        },
+        "faker": {
+            "hashes": [
+                "sha256:48c94daa16a432f2d2bc803c7ff602509699fca228d13e97e379cd860a7e216e",
+                "sha256:77b79e7a2228d57175133af0bbcdd26dc623df81db390ee52f5104d46c010f2f"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==37.3.0"
         },
         "mysqlclient": {
             "hashes": [

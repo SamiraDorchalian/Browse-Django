@@ -1,29 +1,19 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+from django.http import HttpRequest
 
-def welcome_to_store(request):
-    return HttpResponse('Welcome to store')
+from .models import Product
 
-def hello(request):
-    full_name = 'SamiraDorchalian'
-    name = 'Samira'
-    family = 'Dorchalian'
-    age = 26
-    phone_number = age * 2
-    return render(request, 'hello.html', {
-        'full_name': full_name,
-        'name': name,
-        'family': family,
-        'age': age,
-        'phone_number': phone_number,
-    })
 
-def good_bay(request, name):
-    return render(request, 'good_bay.html', {'name': name})
+def show_data(request):
+    queryset = Product.objects.filter(id=1005)
+    print(queryset.exists())
+    # product = queryset.first()
+    # print(product.id)
+    # print(product.name)
+    # print(product.unit_price)
+    # print(len(q))
+    # print(type(q))
+    # print(list(q))
+    # print(q[0])
 
-def number_123(request):
-    return HttpResponse('This is the number of 123') 
-
-def something(request, num):
-    print(num)
-    print(type(num))
-    return HttpResponse('something')
+    return render(request, 'hello.html')
