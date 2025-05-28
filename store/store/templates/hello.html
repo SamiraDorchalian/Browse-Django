@@ -1,16 +1,9 @@
 <html>
   <body>
     {% for product in products %}
-    <h3>{{ product.name }}</h3>
-    <p>id: {{ product.id }}</p>
-    <p>price: {{ product.unit_price }}</p>
+    <h3>name: {{ product.name }}</h3>
+    {% for order_item in product.order_items.all %} {{order_item.quantity}} {% endfor %}
     <p>------------</p>
     {% endfor %}
-
-    {% comment %} {% for customer in customers %}
-    <h3>{{ customer.first_name }} {{ customer.last_name }}</h3>
-    <p>id: {{ customer.id }}</p>
-    <p>------------</p>
-    {% endfor %} {% endcomment %}
   </body>
 </html>
