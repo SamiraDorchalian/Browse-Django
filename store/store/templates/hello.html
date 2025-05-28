@@ -1,9 +1,13 @@
 <html>
   <body>
-    {% for product in products %}
-    <h3>name: {{ product.name }}</h3>
-    {% for order_item in product.order_items.all %} {{order_item.quantity}} {% endfor %}
-    <p>------------</p>
+    {% for order in orders %}
+    <h1>ID: {{ order.id }} ({{ order.customer.first_name }})</h1>
+    {% for item in order.items.all %}
+    <p>
+      {{ item.id }}. {{ item.quantity }} product name: {{ item.product.name }}
+    </p>
+    {% endfor %}
+    <p>---------------------</p>
     {% endfor %}
   </body>
 </html>

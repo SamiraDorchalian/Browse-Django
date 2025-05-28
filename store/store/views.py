@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from decimal import Decimal
 from django.db.models import Q, F
 
-from .models import Product, Customer, OrderItem, Order
+from .models import Product, Customer, OrderItem, Order, Comment
 
 def show_data(request):
 #       queryset = OrderItem.objects.filter(product_id=1)
@@ -39,12 +39,15 @@ def show_data(request):
       # queryset = Product.objects.defer('unit_price') # چه چیز هایی رو نمیخام
       # queryset = OrderItem.objects.select_related('product').all() # مربوط به فیلدی که ForeignKey خورده .
       # queryset = Product.objects.prefetch_related('order_items').all()  # برعکس بالایی عمل میکنه مثلا متد پروداکت در فایل مدل در کدوم اوردرایتم ها استفاده شده 
-      queryset = Product.objects.prefetch_related('order_items').all()
+      # queryset = Comment.objects.select_related('product').all()
+      # queryset = Product.objects.prefetch_related('comments').all()
+      # queryset = Product.objects.select_related('category').prefetch_related('comments').all()
+      queryset = Order.objects.prefetch_related('items__product').select_related('customer').all()
 
 #       print([x.unit_price for x in list(queryset)])
       print(list(queryset))
       # print(len(list(queryset)))
       # list(queryset)
       # return render(request, 'hello.html', {'order_items': list(queryset) } )
-      return render(request, 'hello.html', {'products': list(queryset) } )
+      return render(request, 'hello.html', {'orders': list(queryset) } )
 #     return render(request, 'hello.html', {'customers': list(queryset)})
