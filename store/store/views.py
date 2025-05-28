@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from decimal import Decimal
-from django.db.models import Q, F
+from django.db.models import Q, F, Count, Min, Max, Sum, Avg
+# from django.db.models.aggregates import Count
 
 from .models import Product, Customer, OrderItem, Order, Comment
 
@@ -42,12 +43,30 @@ def show_data(request):
       # queryset = Comment.objects.select_related('product').all()
       # queryset = Product.objects.prefetch_related('comments').all()
       # queryset = Product.objects.select_related('category').prefetch_related('comments').all()
-      queryset = Order.objects.prefetch_related('items__product').select_related('customer').all()
-
+      # queryset = Order.objects.prefetch_related('items__product').select_related('customer').all()
+      # queryset = Product.objects.aggregate(Count('id'))
+      # queryset = Comment.objects.aggregate(Count('id'))
+      # queryset = OrderItem.objects.aggregate(Count('id'))
+      # queryset = Product.objects.aggregate(avg=Avg('unit_price'))
+      # queryset = Product.objects.aggregate(count=Count('id'), avg=Avg('unit_price'))
+      # queryset = Product.objects.aggregate(
+      #       count=Count('id'), 
+      #       avg=Avg('unit_price'), 
+      #       max_inv=Max('inventory'),
+      # )
+      # queryset = Product.objects.filter(inventory__gt=10).aggregate(
+      #       count=Count('id'),
+      #       price_avg=Avg('unit_price'),
+      # )
+      # queryset = OrderItem.objects.filter(product_id=2).aggregate(Count('id'))
+      # product = Product.objects.get(id=1)
+      # print(product.order_items.aggregate(count=Count('id')))
+      queryset = OrderItem.objects.values('product_id').distinct()
+      print(queryset.count())
+      return render(request, 'hello.html' )
+      # print(list(queryset))
 #       print([x.unit_price for x in list(queryset)])
-      print(list(queryset))
       # print(len(list(queryset)))
       # list(queryset)
       # return render(request, 'hello.html', {'order_items': list(queryset) } )
-      return render(request, 'hello.html', {'orders': list(queryset) } )
 #     return render(request, 'hello.html', {'customers': list(queryset)})
