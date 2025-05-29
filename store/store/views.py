@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.db import transaction, connection
-from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
+from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField, Prefetch
 from django.db.models.aggregates import Count
 from django.http import HttpRequest
 from django.shortcuts import render
@@ -262,8 +262,48 @@ def show_data(request):
       # cursor = connection.cursor()
       # cursor.callproc('some_proc', 1, '2', 'hello')
 
+      # queryset = Order.objects.prefetch_related('items') \
+      #                         .annotate(
+      #                               items_count=Count('items')
+      #                         )
+      # for order in queryset:
+      #       print(order.items_count)
+
+
+      # queryset = Order.objects.prefetch_related('items') \
+      #                         .annotate(
+      #                               items_count=Count('items')
+      #                         )
+      # for order in queryset:
+      #       for order_item in order.items.all():
+      #             print(order_item.product.name)
+      # return render(request, 'hello.html' )
+
+
+      # queryset = Order.objects.prefetch_related('items__product') \
+      #                         .annotate(
+      #                               items_count=Count('items')
+      #                         )
+      # for order in queryset:
+      #       for order_item in order.items.all():
+      #             print(order_item.product.name)
+      # return render(request, 'hello.html' )
+
+      queryset = Order.objects.prefetch_related(
+                              Prefetch(
+                                    'items',
+                                    queryset=OrderItem.objects.select_related('product')
+                              )
+                        ) \
+                              .annotate(
+                                    items_count=Count('items')
+                              )
+      for order in queryset:
+            for order_item in order.items.all():
+                  print(order_item.product.name)
 
       return render(request, 'hello.html' )
+
 
 
       # print(list(queryset))
