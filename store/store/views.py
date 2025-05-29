@@ -162,7 +162,17 @@ def show_data(request):
       # category.top_product_id = 2
       # category.save()
 
-      Category.objects.filter(pk=97).update(title='A')
+      # Category.objects.filter(pk=97).update(title='A')
+
+      # return render(request, 'hello.html' )
+
+      # delete objects
+
+      # Category.objects.create(title='SOME NEW TITLE')
+      # Category.objects.filter(pk=101).delete()
+
+      # cat = Category(pk=102)
+      # cat.delete()
 
       return render(request, 'hello.html' )
 
