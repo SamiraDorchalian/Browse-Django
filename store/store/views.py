@@ -242,14 +242,11 @@ def show_data(request):
       # return render(request, 'hello.html' )
 
       
-      # order = Order.objects.create(customer_id=1)
+      queryset = Product.objects.all()
+      print(queryset[2:4])
+      
+      list(queryset)
 
-      # order_item1 = OrderItem.objects.create(
-      #       order=order,
-      #       product_id=1,
-      #       quantity=10,
-      #       unit_price=1000,
-      # )      
 
       return render(request, 'hello.html' )
 
