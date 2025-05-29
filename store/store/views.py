@@ -3,9 +3,11 @@ from django.http import HttpRequest
 from decimal import Decimal
 from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
 # from django.db.models.aggregates import Count
-
+from django.db import transaction
 from .models import Product, Customer, OrderItem, Order, Comment, Category
 
+
+# @transaction.atomic()
 def show_data(request):
       # objects = Manager
 #       queryset = OrderItem.objects.filter(product_id=1)
@@ -226,6 +228,28 @@ def show_data(request):
       # Product.objects.filter(name__in=['p1', 'p2']).delete()
       # cat= Category.objects.earliest('-id')
       # cat.delete()
+
+      # with transaction.atomic():
+      #     order = Order.objects.create(customer_id=1)
+
+      #     order_item1 = OrderItem.objects.create(
+      #          order=order,
+      #          product_id=1,
+      #          quantity=10,
+      #          unit_price=1000,
+      #     )      
+
+      # return render(request, 'hello.html' )
+
+      
+      # order = Order.objects.create(customer_id=1)
+
+      # order_item1 = OrderItem.objects.create(
+      #       order=order,
+      #       product_id=1,
+      #       quantity=10,
+      #       unit_price=1000,
+      # )      
 
       return render(request, 'hello.html' )
 
