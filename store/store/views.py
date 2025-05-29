@@ -111,9 +111,31 @@ def show_data(request):
 
       # queryset = Order.objects.get_by_status(status=Order.ORDER_STATUS_UNPAID)
       # queryset = Order.objects.get_by_status(status='x')
-      queryset = Order.unpaid_orders.all()
+      # queryset = Order.unpaid_orders.all()
 
-      print(queryset)
+      # make new object
+
+      
+      # product = Product.objects.get(id=1)
+      # Comment.objects.create(
+      #       name='samira',
+      #       body='django is great. I love it.',
+      #       product=product
+      # )
+
+      # Comment.objects.create(
+      #       name='samira',
+      #       body='django is great. I love it.',
+      #       product_id=1,
+      # )
+
+      product = Product.objects.get(id=1)
+      new_comment = Comment()
+      new_comment.name= 'Samira'
+      new_comment.body= 'I love to learn Django!'
+      new_comment.product= product
+      new_comment.save()
+
       return render(request, 'hello.html' )
 
 
