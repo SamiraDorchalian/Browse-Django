@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from decimal import Decimal
 from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
 # from django.db.models.aggregates import Count
-from django.db import transaction
+from django.db import transaction, connection
 from .models import Product, Customer, OrderItem, Order, Comment, Category
 
 
@@ -242,10 +242,24 @@ def show_data(request):
       # return render(request, 'hello.html' )
 
       
-      queryset = Product.objects.all()
-      print(queryset[2:4])
-      
-      list(queryset)
+      # queryset = Product.objects.all()
+      # print(queryset[2:4])
+
+      # list(queryset)
+
+      # اجرا sql  خام
+
+      # cursor = connection.cursor()
+      # cursor.execute('')
+      # cursor.close()
+
+      # with connection.cursor() as cursor:
+      #       cursor.execute('')
+
+      # Product.objects.raw('SELECT is, unit_price FROM store_product')
+
+      # cursor = connection.cursor()
+      # cursor.callproc('some_proc', 1, '2', 'hello')
 
 
       return render(request, 'hello.html' )
