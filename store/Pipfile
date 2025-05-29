@@ -6,9 +6,9 @@ name = "pypi"
 [packages]
 django-debug-toolbar = "*"
 django = "==4.2.21"
-mysqlclient = "*"
 faker = "*"
 factory-boy = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
