@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
 # from django.db.models.aggregates import Count
 
-from .models import Product, Customer, OrderItem, Order, Comment
+from .models import Product, Customer, OrderItem, Order, Comment, Category
 
 def show_data(request):
       # objects = Manager
@@ -129,12 +129,40 @@ def show_data(request):
       #       product_id=1,
       # )
 
-      product = Product.objects.get(id=1)
-      new_comment = Comment()
-      new_comment.name= 'Samira'
-      new_comment.body= 'I love to learn Django!'
-      new_comment.product= product
-      new_comment.save()
+      # product = Product.objects.get(id=1)
+      # new_comment = Comment()
+      # new_comment.name= 'Samira'
+      # new_comment.body= 'I love to learn Django!'
+      # new_comment.product= product
+      # new_comment.save()
+
+      # return render(request, 'hello.html' )
+
+      # update objects
+
+      # category = Category(id=100)
+      # category.title = 'Cars'
+      # category.description = 'This is the description for category'
+      # category.save()
+
+      # return render(request, 'hello.html' )
+
+      # product = Product.objects.get(id=1)
+      # category = Category(id=100)
+      # category.title = 'Cars'
+      # category.description = 'This is the description for category'
+      # category.top_product_id = 2
+      # category.save()
+
+      # category = Category(pk=99)
+      # category.top_product_id = 2
+      # category.save()
+
+      # category = Category.objects.get(pk=98)
+      # category.top_product_id = 2
+      # category.save()
+
+      Category.objects.filter(pk=97).update(title='A')
 
       return render(request, 'hello.html' )
 
