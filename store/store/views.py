@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpRequest
 from decimal import Decimal
-from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
-# from django.db.models.aggregates import Count
 from django.db import transaction, connection
+from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
+from django.db.models.aggregates import Count
+from django.http import HttpRequest
+from django.shortcuts import render
+
 from .models import Product, Customer, OrderItem, Order, Comment, Category
 
 
