@@ -42,6 +42,23 @@ class Address(models.Model):
     # class Meta:
     #     db_table = 'customer_address'
 
+class UnpaidOrderManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Order.ORDER_STATUS_UNPAID)
+
+
+# class OrderManager(models.Manager):
+#     def get_by_status(self, status):
+#         if status in [Order.ORDER_STATUS_UNPAID, Order.ORDER_STATUS_PAID, Order.ORDER_STATUS_CANCELED]:
+#             return self.get_queryset().filter(status=Order.ORDER_STATUS_UNPAID)
+#         return self.get_queryset()
+
+#         # if status == Order.ORDER_STATUS_PAID:
+#         #     return self.get_queryset().filter(status=Order.ORDER_STATUS_PAID)
+
+#         # if status == Order.ORDER_STATUS_CANCELED:
+#         #     return self.get_queryset().filter(status=Order.ORDER_STATUS_CANCELED)
+
 
 class Order(models.Model):
     ORDER_STATUS_PAID = 'p'
@@ -57,6 +74,9 @@ class Order(models.Model):
     datetime_create = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default=ORDER_STATUS_UNPAID)
 
+    # objects = OrderManager()
+    objects = models.Manager()
+    unpaid_orders = UnpaidOrderManager()
 
     def __str__(self):
         return f'Order id={self.id}'
@@ -75,7 +95,12 @@ class OrderItem(models.Model):
 
 class CommentManager(models.Manager):
     def get_approved(self):
-        return self.get_queryset().filter(status=Comment.COMMENT_STATUS_WAITING)
+        return self.get_queryset().filter(status=Comment.COMMENT_STATUS_APPROVED)
+
+
+class ApprovedCommentManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Comment.COMMENT_STATUS_APPROVED)
 
 
 class Comment(models.Model):
@@ -96,7 +121,8 @@ class Comment(models.Model):
     status = models.CharField(max_length=2, choices=COMMENT_STATUS, default=COMMENT_STATUS_NOT_APPROVED)
 
     # objects = models.Manager() # default
-    objects =CommentManager()
+    objects = CommentManager()
+    approved = ApprovedCommentManager()
 
 
 class Cart(models.Model):

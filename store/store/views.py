@@ -105,7 +105,14 @@ def show_data(request):
 
       # Custom manager method
 
-      queryset = Comment.objects.all()
+      # queryset = Comment.approved.filter(datetime_create__year=2025).all()
+      # print(queryset)
+      # return render(request, 'hello.html' )
+
+      # queryset = Order.objects.get_by_status(status=Order.ORDER_STATUS_UNPAID)
+      # queryset = Order.objects.get_by_status(status='x')
+      queryset = Order.unpaid_orders.all()
+
       print(queryset)
       return render(request, 'hello.html' )
 
