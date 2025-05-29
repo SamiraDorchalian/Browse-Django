@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from decimal import Decimal
-from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func
+from django.db.models import Q, F, Count, Min, Max, Sum, Avg , Value, Func, ExpressionWrapper, DecimalField
 # from django.db.models.aggregates import Count
 
 from .models import Product, Customer, OrderItem, Order, Comment
 
 def show_data(request):
+      # objects = Manager
 #       queryset = OrderItem.objects.filter(product_id=1)
 #       queryset = Product.objects.filter(inventory=5)
 #       queryset = Product.objects.filter(name__icontains='site', inventory__gt=3, inventory__lt=10)
@@ -80,10 +81,35 @@ def show_data(request):
       # queryset = Customer.objects.annotate(fullname=Func(F('first_name'), Value(' '), F('last_name'), function='CONCAT')).defer('first_name', 'last_name')
 
       # group by
-      
-      queryset = Customer.objects.annotate(fullname=Func(F('first_name'), Value(' '), F('last_name'), function='CONCAT')).defer('first_name', 'last_name')
+
+      # queryset = OrderItem.objects \
+      #                     .values('order_id') \
+      #                     .annotate(count=Count('order_id'))
+      # queryset = Order.objects.annotate(items_count=Count('orderitem'))
+      # queryset = Customer.objects.annotate(orders_count=Count('orders'))
+      # queryset = Customer.objects.annotate(orders_count=Count('orders')).all()
+      # queryset = Customer.objects.annotate(orders_count=Count('orders')).filter(id=17).all()
+
+      # ExpressionWrapper - یه عبارت SQL پیچیده رو به‌عنوان یه فیلد جدید تو QuerySet تعریف کنی. این ابزار وقتی مفیده که بخوای عملیات‌هایی مثل ترکیب رشته‌ها، محاسبات ریاضی، یا شرط‌های سفارشی رو تو دیتابیس اجرا کنی.
+
+      # queryset = OrderItem.objects.annotate(
+      #       total_price=ExpressionWrapper(F('quantity') * F('unit_price'), output_field=DecimalField())
+      # )
+      # queryset = OrderItem.objects.annotate(
+      #       total_price=ExpressionWrapper(F('unit_price') * 0.95, output_field=DecimalField())
+      # )
+
+      # Custom manager
+
+      # queryset = Comment.objects.filter(status=Comment.COMMENT_STATUS_WAITING)
+
+      # Custom manager method
+
+      queryset = Comment.objects.all()
       print(queryset)
       return render(request, 'hello.html' )
+
+
       # print(list(queryset))
 #       print([x.unit_price for x in list(queryset)])
       # print(len(list(queryset)))
