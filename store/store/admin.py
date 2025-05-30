@@ -46,6 +46,10 @@ class ProductAdmin(admin.ModelAdmin):
 # Custom action
     actions = ['clear_inventory']
     search_fields =['name',]
+# exclude and readonly_fields
+    # fields = ['name', 'slug'] # just show this fields
+    # exclude = ['discounts'] # don't show this fields (instead of Fileds👆)
+    # readonly_fields = ['category'] # just for read
 # Prepopulated Fields
     prepopulated_fields = {
         'slug': ['name', ]
