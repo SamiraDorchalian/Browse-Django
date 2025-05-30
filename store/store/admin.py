@@ -45,6 +45,10 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['datetime_create', InventoryFilter]
 # Custom action
     actions = ['clear_inventory']
+# Prepopulated Fields
+    prepopulated_fields = {
+        'slug': ['name', ]
+    }
 
     def get_queryset(self, request):
         return super().get_queryset(request) \
