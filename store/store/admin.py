@@ -121,6 +121,13 @@ class CommentAdmin(admin.ModelAdmin):
     # list_display_links = ['id', 'product'] # for change link
 
 
+class OrderItemInLine(admin.TabularInline):
+# class OrderItemInLine(admin.StackedInline):
+    model = OrderItem
+    fields = ['product', 'quantity', 'unit_price']
+    extra = 1
+    min_num = 1
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -129,6 +136,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = ['status']
     list_per_page = 10
     ordering = ['-datetime_create']
+    inlines =[OrderItemInLine]
 
 # prefetch related and change query in Admin / Make a new query
     def get_queryset(self, request):
