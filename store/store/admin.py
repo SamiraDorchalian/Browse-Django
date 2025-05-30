@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.db.models import Count
+from django.utils.html import format_html
+from django.urls import reverse
+from django.utils.http import urlencode
 
 from .models import Category, Customer, Order, Product ,Comment
 
@@ -33,13 +36,20 @@ class InventoryFilter(admin.SimpleListFilter):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     # list_display = ['id', 'name', 'inventory', 'unit_price', 'is_low', ]
-    list_display = ['id', 'name', 'inventory', 'unit_price', 'inventory_status', 'product_category' ]
+    list_display = ['id', 'name', 'inventory', 'unit_price', 'inventory_status', 'product_category' ,'num_of_comments' ]
     list_per_page = 10
     list_editable = ['unit_price']
     # ordering = ['-datetime_create']
     list_select_related = ['category']
 # Custom Filtering
     list_filter = ['datetime_create', InventoryFilter]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request) \
+                .prefetch_related('comments') \
+                .annotate(
+                    comments_count=Count('comments'),
+                )
 
 
 # Computed Fields
@@ -54,6 +64,21 @@ class ProductAdmin(admin.ModelAdmin):
             return 'High'
         return 'Medium'
     
+    @admin.display(description='# comments', ordering='comments_count')
+    def num_of_comments(self, product):
+        # return product.comments_count
+# add link to panelAdmin 
+# این لینک تمام کامنت های مربوط به اون محصول رو نشون میده
+        url = (
+            reverse('admin:store_comment_changelist')
+            + '?'
+            + urlencode({
+                'product__id': product.id,
+            })
+        )
+        return format_html('<a href="{}">{}</a>', url, product.comments_count)
+
+    
 # select related in ListAdmin
     # @admin.display(ordering='category_id') # for sort default in panel admin
     @admin.display(ordering='category__title') # for sort default in panel admin
@@ -66,6 +91,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['id', 'product', 'status', ]
     list_editable = ['status']
     list_per_page = 10
+    # list_display_links = ['id', 'product'] # for change link
+
 
 
 @admin.register(Order)
@@ -84,8 +111,8 @@ class OrderAdmin(admin.ModelAdmin):
         .annotate(
             items_count=Count('items')
         )
-
-    @admin.display(ordering='items_count')
+# description for change name
+    @admin.display(ordering='items_count', description='# items')
     def num_of_items(self, order): # by related_name='orders' in file models / ForeignKey
         # return order.items.count()
         return order.items_count
