@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.http import urlencode
 
-from .models import Category, Customer, Order, Product ,Comment
+from .models import Category, Customer, Order, OrderItem, Product ,Comment
 
 # Custom Filtering
 class InventoryFilter(admin.SimpleListFilter):
@@ -45,6 +45,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['datetime_create', InventoryFilter]
 # Custom action
     actions = ['clear_inventory']
+    search_fields =['name',]
 # Prepopulated Fields
     prepopulated_fields = {
         'slug': ['name', ]
@@ -111,6 +112,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['id', 'product', 'status', ]
     list_editable = ['status']
     list_per_page = 10
+# Autocomplete Fields
+    autocomplete_fields = ['product', ]
     # list_display_links = ['id', 'product'] # for change link
 
 
@@ -148,6 +151,11 @@ class CustomerAdmin(admin.ModelAdmin):
     # search_fields = ['first_name__startswith', 'last_name__startswith', ] # What word should it start with? & Case sensitive
     search_fields = ['first_name__istartswith', 'last_name__istartswith', ] # its not Case sensitive => istartswith
 
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ['order', 'product', 'quantity', 'unit_price']
+    autocomplete_fields = ['product', ]
 
 # admin.site.register(Product, ProductAdmin)
 admin.site.register(Category)
