@@ -11,7 +11,6 @@ class Category(models.Model):
         return self.title
 
 
-
 class Discount(models.Model):
     discount = models.FloatField()
     description = models.CharField(max_length=255)
@@ -33,7 +32,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Customer(models.Model):
