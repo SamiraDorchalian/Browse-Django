@@ -17,14 +17,18 @@ def product_list(request):
     )
     return Response(serializer.data)
 
-@api_view()
+@api_view(['GET', 'POST'])
 def product_detail(request, pk):
-    product = get_object_or_404(
-        Product.objects.select_related('category'), 
-        pk=pk
-    )
-    serializer = ProductSerializers(product, context={'request': request})
-    return Response(serializer.data)
+    if request.method == 'GET':
+        product = get_object_or_404(
+            Product.objects.select_related('category'), 
+            pk=pk
+        )
+        serializer = ProductSerializers(product, context={'request': request})
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = ProductSerializers(data=request.data)
+        return Response('All ok!')
 
 @api_view()
 def category_detail(request, pk):
