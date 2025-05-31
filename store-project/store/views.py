@@ -9,15 +9,12 @@ from .serializers import ProductSerializers
 
 @api_view()
 def product_list(request):
-    return Response('Hello')
+    products_queryset = Product.objects.all()
+    serializer = ProductSerializers(products_queryset, many=True)
+    return Response(serializer.data)
 
 @api_view()
 def product_detail(request, id):
     product = get_object_or_404(Product, pk=id)
-    # try:
-    #     product = Product.objects.get(pk=id) #get data from database
-    # except Product.DoesNotExist:
-    #     return Response(status=status.HTTP_404_NOT_FOUND) #If there was no data
-
-    serializer = ProductSerializers(product) # Data processing to change format
-    return Response(serializer.data) # Deliver data to the user in JSON format
+    serializer = ProductSerializers(product)
+    return Response(serializer.data)
