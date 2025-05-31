@@ -17,6 +17,7 @@ def product_list(request):
     )
     return Response(serializer.data)
 
+
 @api_view(['GET', 'POST'])
 def product_detail(request, pk):
     if request.method == 'GET':
@@ -30,8 +31,9 @@ def product_detail(request, pk):
         serializer = ProductSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.validated_data
-        print(serializer.validated_data)
+        serializer.save()
         return Response('Everything is OK!')
+
 
 @api_view()
 def category_detail(request, pk):
