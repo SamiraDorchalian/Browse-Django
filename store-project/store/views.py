@@ -7,25 +7,15 @@ from rest_framework import status
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializers
 
-@api_view()
-def product_list(request):
-    products_queryset = Product.objects.select_related('category').all()
-    serializer = ProductSerializers(
-        products_queryset, 
-        many=True, 
-        context={'request': request}
-    )
-    return Response(serializer.data)
-
-
 @api_view(['GET', 'POST'])
-def product_detail(request, pk):
+def product_list(request):
     if request.method == 'GET':
-        product = get_object_or_404(
-            Product.objects.select_related('category'), 
-            pk=pk
+        products_queryset = Product.objects.select_related('category').all()
+        serializer = ProductSerializers(
+            products_queryset, 
+            many=True, 
+            context={'request': request}
         )
-        serializer = ProductSerializers(product, context={'request': request})
         return Response(serializer.data)
     elif request.method == 'POST':
         serializer = ProductSerializers(data=request.data)
@@ -33,6 +23,22 @@ def product_detail(request, pk):
         serializer.validated_data
         serializer.save()
         return Response('Everything is OK!')
+
+
+@api_view(['GET', 'PUT'])
+def product_detail(request, pk):
+    product = get_object_or_404(
+        Product.objects.select_related('category'), 
+        pk=pk
+    )
+    if request.method == 'GET':
+        serializer = ProductSerializers(product, context={'request': request})
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ProductSerializers(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 @api_view()
