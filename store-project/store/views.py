@@ -11,13 +11,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Product, Comment
 from .serializers import CategorySerializer, CommentSerializers, ProductSerializers
+from .filters import ProductFilter
 
 
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializers
     queryset = Product.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category_id', 'inventory']
+    # filterset_fields = ['category_id', 'inventory']
+    filterset_class = ProductFilter
 
     def get_serializer_context(self):
         return {'request': self.request}
