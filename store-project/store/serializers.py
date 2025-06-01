@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from .models import Category, Product ,Comment ,Cart
+from .models import CartItem, Category, Product ,Comment ,Cart
 
 class CategorySerializer(serializers.ModelSerializer):
     # num_of_products = serializers.SerializerMethodField()
@@ -50,9 +50,16 @@ class CommentSerializers(serializers.ModelSerializer):
         return Comment.objects.create(product_id=product_id, **validated_data)
 
 
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['id', 'product', 'quantity', ]
+
+
 class CartSerializer(serializers.ModelSerializer):
-    # id = serializers.UUIDField(read_only=True)
+    items = CartItemSerializer(many=True)
+
     class Meta:
         model = Cart
-        fields = ['id',]
-        read_only_fields = ['id', ]
+        fields = ['id', 'items', ]
+        read_only_fields = ['id', 'items', ]
