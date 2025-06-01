@@ -1,23 +1,16 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter , DefaultRouter
+from rest_framework_nested import routers
 
 from . import views
 
 # router = SimpleRouter()
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register('products', views.ProductViewSet, basename='product') # product-list \ product-detail
 router.register('categories', views.CategoryViewSet, basename='category') # category-list \ category-detail
 
-urlpatterns = router.urls
+products_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
+products_router.register('comments', views.CommentViewSet, basename='product-comments')
 
-# urlpatterns = [
-#     path('', include(router.urls)),
-# ]
+urlpatterns = router.urls + products_router.urls
 
-
-# urlpatterns = [
-#     path('products/', views.ProductList.as_view()),
-#     path('products/<int:pk>/', views.ProductDetail.as_view()),
-#     path('categories/', views.CategoryList.as_view()),
-#     path('categories/<int:pk>/', views.CategoryDetail.as_view(), name='category-detail'),
-# ]
