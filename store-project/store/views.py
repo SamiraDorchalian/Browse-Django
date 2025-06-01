@@ -29,28 +29,6 @@ class ProductViewSet(ModelViewSet):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# class ProductList(ListCreateAPIView):
-#     serializer_class = ProductSerializers
-#     queryset = Product.objects.select_related('category').all()
-    
-#     def get_serializer_context(self):
-#         return {'request': self.request}
-
-
-# class ProductDetail(RetrieveUpdateDestroyAPIView):
-#     serializer_class = ProductSerializers
-#     queryset = Product.objects.select_related('category').all()
-
-#     def delete(self, request, pk):
-#         product = get_object_or_404(
-#             Product.objects.select_related('category'), 
-#             pk=pk,
-#         )
-#         if product.order_items.count() > 0:
-#             return Response({'error': 'There is some order items including this product. Please remove them first.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#         product.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -62,23 +40,4 @@ class CategoryViewSet(ModelViewSet):
             return Response({'error': 'There is some products related this category. please remove them first.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-# class CategoryList(ListCreateAPIView):
-#     serializer_class = CategorySerializer
-#     queryset = Category.objects.prefetch_related('products').all()
-
-
-# class CategoryDetail(RetrieveUpdateDestroyAPIView):
-#     serializer_class = CategorySerializer
-#     queryset = Category.objects.prefetch_related('products')
-
-#     def delete(self, request, pk):
-#         category = get_object_or_404(Category.objects.prefetch_related('products'), pk=pk)
-#         if category.products.count() > 0:
-#             return Response({'error': 'There is some products related this category. please remove them first.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#         category.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
 
