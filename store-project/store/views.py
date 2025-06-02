@@ -15,8 +15,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny, DjangoModelPermissions
 
 from .paginations import DefaultPagination
-from .models import Cart, CartItem, Category, Customer, Product, Comment
-from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
+from .models import Cart, CartItem, Category, Customer, Order, Product, Comment
+from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, OrderSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
+queryset = Order.objects.all()
 from .filters import ProductFilter
 from .permissions import CustomDjangoModelPermissions, IsAdminReadOnly, SendPrivateEmailToCustomerPermission
 
@@ -116,3 +117,7 @@ class CustomerViewSet(ModelViewSet):
     @action(detail=True, permission_classes=[SendPrivateEmailToCustomerPermission])
     def send_private_email(self, request, pk):
         return Response(f'Sending email to customer {pk=}')
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
