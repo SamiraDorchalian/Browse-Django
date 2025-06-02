@@ -12,10 +12,11 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Prefetch
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny, DjangoModelPermissions
 
 from .paginations import DefaultPagination
-from .models import Cart, CartItem, Category, Customer, Order, Product, Comment
+from .models import Cart, CartItem, Category, Customer, Order, OrderItem, Product, Comment
 from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, OrderSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 queryset = Order.objects.all()
 from .filters import ProductFilter
@@ -120,4 +121,12 @@ class CustomerViewSet(ModelViewSet):
 
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
+    # queryset = Order.objects.prefetch_related('items').all()
+    
+    def get_queryset(self):
+        return Order.objects.prefetch_related(
+            Prefetch(
+                'items',
+                queryset=OrderItem.objects.select_related('product'),
+            )
+        ).select_related('customer__user').all()

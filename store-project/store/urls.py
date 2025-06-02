@@ -8,9 +8,9 @@ from . import views
 router = routers.DefaultRouter()
 router.register('products', views.ProductViewSet, basename='product') # product-list \ product-detail
 router.register('categories', views.CategoryViewSet, basename='category') # category-list \ category-detail
-router.register('carts', views.CartViewSet)
-router.register('customers', views.CustomerViewSet)
-router.register('orders', views.OrderViewSet)
+router.register('carts', views.CartViewSet, basename='cart')
+router.register('customers', views.CustomerViewSet, basename='customer')
+router.register('orders', views.OrderViewSet, basename='order')
 
 products_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
 products_router.register('comments', views.CommentViewSet, basename='product-comments')
