@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view ,action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -15,8 +15,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 from .paginations import DefaultPagination
-from .models import Cart, CartItem, Category, Product, Comment
-from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
+from .models import Cart, CartItem, Category, Customer, Product, Comment
+from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
 
 
@@ -91,4 +91,14 @@ class CartViewSet(CreateModelMixin,
     serializer_class = CartSerializer
     queryset = Cart.objects.prefetch_related('items__product').all()
 
-# 9f0d6b9e-ef51-48a7-97bc-99f14391b401
+
+class CustomerViewSet(ModelViewSet):
+    serializer_class = CustomerSerializer
+    queryset = Customer.objects.all()
+
+    @action(detail=False)
+    def me(self, request):
+        user_id = request.user.id
+        customer = Customer.objects.get(user_id=user_id)
+        serializer = CustomerSerializer(customer)
+        return Response(serializer.data)
