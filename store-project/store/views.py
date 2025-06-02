@@ -12,24 +12,25 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny, DjangoModelPermissions
 
 from .paginations import DefaultPagination
 from .models import Cart, CartItem, Category, Customer, Product, Comment
 from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
-from .permissions import IsAdminReadOnly, SendPrivateEmailToCustomerPermission
+from .permissions import CustomDjangoModelPermissions, IsAdminReadOnly, SendPrivateEmailToCustomerPermission
 
 
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializers
     queryset = Product.objects.all()
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter, ]
-    ordering_fields = ['name', 'unit_price', 'inventory', ]
-    search_fields = ['name', 'category__title', ]
+    ordering_fields = ['name', 'unit_price', 'inventory' ]
+    search_fields = ['name', 'category__title' ]
     pagination_class = DefaultPagination
     # filterset_fields = ['category_id', 'inventory']
     filterset_class = ProductFilter
+    permission_classes = [IsAdminReadOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
