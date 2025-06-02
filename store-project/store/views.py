@@ -12,12 +12,13 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from .paginations import DefaultPagination
 from .models import Cart, CartItem, Category, Customer, Product, Comment
 from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
+from .permissions import IsAdminReadOnly
 
 
 class ProductViewSet(ModelViewSet):
@@ -47,6 +48,7 @@ class ProductViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.prefetch_related('products').all()
+    permission_classes = [IsAdminReadOnly]
 
     def delete(self, request, pk):
         category = get_object_or_404(Category.objects.prefetch_related('products'), pk=pk)
@@ -92,7 +94,6 @@ class CartViewSet(CreateModelMixin,
     queryset = Cart.objects.prefetch_related('items__product').all()
 
 
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
     queryset = Customer.objects.all()
