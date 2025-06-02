@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .paginations import DefaultPagination
 from .models import Cart, CartItem, Category, Product, Comment
-from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, ProductSerializers ,CartItemSerializer
+from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
 
 
@@ -74,6 +74,8 @@ class CartItemViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return AddCartItemSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateCartItemSerializer
         return CartItemSerializer
 
     def get_serializer_context(self):
