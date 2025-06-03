@@ -147,16 +147,14 @@ class OrderViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'user_id': self.request.user.id}
+
+    def create(self, request, *args, **kwargs):
+        create_order_serializer = OrderCreateSerializer(
+            data=request.data,
+            context={'user_id': self.request.user.id},
+        )
+        create_order_serializer.is_valid(raise_exception=True)
+        created_order = create_order_serializer.save()
         
-        
-
-
-
-
-
-
-
-# {
-#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0OTAxODU5NCwiaWF0IjoxNzQ4OTMyMTk0LCJqdGkiOiI0NmYxNmYxMDIxNzQ0MzFkYTk3ZGRjZmI4YzhiODBiMiIsInVzZXJfaWQiOjF9.IkI2PBTEzz5kTivoEKAo4Z1pmepr0RkUH5kZLO7-zEA",
-#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5MDE4NTk0LCJpYXQiOjE3NDg5MzIxOTQsImp0aSI6IjY1ZDJjZjhiZmQyZjQzNTU4ZWU0OTA3MWY2MmQ3NjBjIiwidXNlcl9pZCI6MX0._NI1BKhbNZKuaR0cxqljupivT7Bf7bhOZa0sPVpCISE"
-# }
+        serializer = OrderSerializer(created_order)
+        return Response(serializer.data)
