@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny, D
 
 from .paginations import DefaultPagination
 from .models import Cart, CartItem, Category, Customer, Order, OrderItem, Product, Comment
-from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, OrderCreateSerializer, OrderForAdminSerializer, OrderSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
+from .serializers import AddCartItemSerializer, CartSerializer, CategorySerializer, CommentSerializers, CustomerSerializer, OrderCreateSerializer, OrderForAdminSerializer, OrderSerializer, OrderUpdateSerializer, ProductSerializers ,CartItemSerializer, UpdateCartItemSerializer
 queryset = Order.objects.all()
 from .filters import ProductFilter
 from .permissions import CustomDjangoModelPermissions, IsAdminReadOnly, SendPrivateEmailToCustomerPermission
@@ -146,6 +146,9 @@ class OrderViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return OrderCreateSerializer
+        
+        if self.request.method == 'PATCH':
+            return OrderUpdateSerializer
 
         if self.request.user.is_staff:
             return OrderForAdminSerializer
